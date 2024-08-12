@@ -1,0 +1,145 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Resource Files\ImGui">
+      <UniqueIdentifier>{5fce93bf-87b8-4cd5-86c7-efcb72db2e1c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\MinHook">
+      <UniqueIdentifier>{d3604e56-489f-4a8c-8fb7-623d62efff6b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Protection">
+      <UniqueIdentifier>{98cd5a4f-c4f8-42a9-93d6-9c9d2ec341c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\SDK">
+      <UniqueIdentifier>{15b8bc9a-2e83-4d7e-a7b4-f69c954d1a02}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Virtualizer">
+      <UniqueIdentifier>{af36445a-486b-4f51-a787-ee29f95cc40c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="pch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inlcude\Render.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inlcude\Memory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inlcude\Hooking.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inlcude\DX11.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inlcude\Drawing.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inlcude\Console.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inlcude\CVars.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inlcude\Feature.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inlcude\Obfuscate.h">
+      <Filter>Resource Files\Protection</Filter>
+    </ClInclude>
+    <ClInclude Include="inlcude\Lazy.h">
+      <Filter>Resource Files\Protection</Filter>
+    </ClInclude>
+    <ClInclude Include="inlcude\RetSpoofer.h">
+      <Filter>Resource Files\Protection</Filter>
+    </ClInclude>
+    <ClInclude Include="inlcude\UECore.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inlcude\SDK.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="dllmain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="pch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Console.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CVars.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Drawing.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\DX11.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hooking.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Memory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Render.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Feature.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="libs\ImGui\imgui.cpp">
+      <Filter>Resource Files\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="libs\ImGui\imgui_draw.cpp">
+      <Filter>Resource Files\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="libs\ImGui\imgui_impl_dx11.cpp">
+      <Filter>Resource Files\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="libs\ImGui\imgui_impl_win32.cpp">
+      <Filter>Resource Files\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="libs\ImGui\imgui_tables.cpp">
+      <Filter>Resource Files\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="libs\ImGui\imgui_widgets.cpp">
+      <Filter>Resource Files\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UECore.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SDK.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="libs\MinHook\MinHook.lib">
+      <Filter>Resource Files\MinHook</Filter>
+    </Library>
+    <Library Include="libs\Virtualizer\VirtualizerSDK64.lib">
+      <Filter>Resource Files\Virtualizer</Filter>
+    </Library>
+  </ItemGroup>
+  <ItemGroup>
+    <MASM Include="inlcude\RetSpoofer.asm">
+      <Filter>Resource Files\Protection</Filter>
+    </MASM>
+  </ItemGroup>
+</Project>
