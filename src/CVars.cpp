@@ -49,7 +49,8 @@ void BotInitSettings()
 	Settings[ESP_ARMOR] = BotAddConfig("Esp Settings", "Esp_Armor", false);
 	Settings[ESP_WEAPON] = BotAddConfig("Esp Settings", "Esp_Weapon", false);
 	Settings[ESP_GLOW] = BotAddConfig("Esp Settings", "Esp_Glow", false);
-	Settings[ESP_LOOT] = BotAddConfig("Esp Settings", "Esp_Loot", 0, 0, 4);
+	Settings[ESP_LOOT] = BotAddConfig("Esp Settings", "Esp_Loot", false);
+	Settings[ESP_LOOT_LEVEL] = BotAddConfig("Esp Settings", "Esp_LootLevel", 0, 0, 4);
 	Settings[ESP_FIREARM] = BotAddConfig("Esp Settings", "Esp_Firearm", false);
 	Settings[ESP_MELEE] = BotAddConfig("Esp Settings", "Esp_Melee", false);
 	Settings[ESP_UNARMED] = BotAddConfig("Esp Settings", "Esp_Unarmed", false);
