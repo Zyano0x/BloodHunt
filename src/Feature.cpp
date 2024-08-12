@@ -591,36 +591,38 @@ FVector2D Game::WorldToRadar(FRotator Rotation, FVector Location, FVector Entity
 	return DotPos;
 }
 
-FVector Game::GetAimWorldLocation(ATigerCharacter* Player)
+FRotator Game::CalcAngle(FVector Src, FVector Dst, FRotator OldRotation, float Smoothing)
 {
-	USkeletalMeshComponent* MeshComponent = Player->Mesh;
-	if (!IsValid(MeshComponent))
-		return FVector();
+	VIRTUALIZER_TIGER_LITE_START;
+	FVector Dir = Dst - Src;
+	Dir.GetSafeNormal();
+	FRotator Yaptr = Dir.ToRotator();
+	FRotator CpYaT = OldRotation;
+	Yaptr.Pitch -= CpYaT.Pitch;
+	Yaptr.Yaw -= CpYaT.Yaw;
+	Yaptr.Roll = 0.f;
+	Yaptr.Clamp();
+	CpYaT.Pitch += Yaptr.Pitch / Smoothing;
+	CpYaT.Yaw += Yaptr.Yaw / Smoothing;
+	CpYaT.Roll = 0.f;
+	VIRTUALIZER_TIGER_LITE_END;
+	return CpYaT;
+}
 
-	switch (Settings[AIM_BONE].Value.iValue) {
-	case 0:
-		return MeshComponent->GetSocketLocation(MeshComponent->GetBoneName(MeshComponent->GetBoneIndex(FName(skCrypt("Head")))));
-	case 1:
-		return MeshComponent->GetSocketLocation(MeshComponent->GetBoneName(MeshComponent->GetBoneIndex(FName(skCrypt("neck_01")))));
-	case 2:
-		return MeshComponent->GetSocketLocation(MeshComponent->GetBoneName(MeshComponent->GetBoneIndex(FName(skCrypt("Spine_01")))));
-	case 3:
-	{
-		std::vector<FName> BoneNames = {
-			FName(skCrypt("Head")),
-			FName(skCrypt("neck_01")),
-			FName(skCrypt("Spine_01")),
-			FName(skCrypt("Spine_02")),
-			FName(skCrypt("Spine_03"))
-		};
+FRotator Game::CalcAngle(FVector Target)
+{
+	VIRTUALIZER_TIGER_LITE_START;
+	FVector Rotation = LocalPlayerCamera->GetCameraLocation() - Target;
+	FRotator NewViewAngle = { 0, 0, 0 };
+	float hyp = sqrt(Rotation.X * Rotation.X + Rotation.Y * Rotation.Y);
+	NewViewAngle.Pitch = -atan(Rotation.Z / hyp) * (180.f / M_PI);
+	NewViewAngle.Yaw = atan(Rotation.Y / Rotation.X) * (180.f / M_PI);
+	NewViewAngle.Roll = (float)0.f;
 
-		int32_t Index = UKMathLib->RandomIntegerInRange(0, BoneNames.size() - 1);
-		FName RandonBoneName = BoneNames[Index];
-		return MeshComponent->GetSocketLocation(MeshComponent->GetBoneName(MeshComponent->GetBoneIndex(RandonBoneName)));
-	}
-	default:
-		return FVector();
-	}
+	if (Rotation.X >= 0.f)
+		NewViewAngle.Yaw += 180.0f;
+	VIRTUALIZER_TIGER_LITE_END;
+	return NewViewAngle;
 }
 
 FVector Game::Prediction(float BulletVelocity, float BulletGravity, float TargetDistance, FVector TargetPosition, FVector TargetVelocity)
@@ -654,38 +656,36 @@ FVector Game::CalcPredition(ATigerCharacter* LocalCharacter, ATigerCharacter* Ta
 	return Out.IsValid() ? Out : FVector();
 }
 
-FRotator Game::CalcAngle(FVector Src, FVector Dst, FRotator OldRotation, float Smoothing)
+FVector Game::GetAimWorldLocation(ATigerCharacter* Player)
 {
-	VIRTUALIZER_TIGER_LITE_START;
-	FVector Dir = Dst - Src;
-	Dir.GetSafeNormal();
-	FRotator Yaptr = Dir.ToRotator();
-	FRotator CpYaT = OldRotation;
-	Yaptr.Pitch -= CpYaT.Pitch;
-	Yaptr.Yaw -= CpYaT.Yaw;
-	Yaptr.Roll = 0.f;
-	Yaptr.Clamp();
-	CpYaT.Pitch += Yaptr.Pitch / Smoothing;
-	CpYaT.Yaw += Yaptr.Yaw / Smoothing;
-	CpYaT.Roll = 0.f;
-	VIRTUALIZER_TIGER_LITE_END;
-	return CpYaT;
-}
+	USkeletalMeshComponent* MeshComponent = Player->Mesh;
+	if (!IsValid(MeshComponent))
+		return FVector();
 
-FRotator Game::CalcAngle(FVector Target)
-{
-	VIRTUALIZER_TIGER_LITE_START;
-	FVector Rotation = LocalPlayerCamera->GetCameraLocation() - Target;
-	FRotator NewViewAngle = { 0, 0, 0 };
-	float hyp = sqrt(Rotation.X * Rotation.X + Rotation.Y * Rotation.Y);
-	NewViewAngle.Pitch = -atan(Rotation.Z / hyp) * (180.f / M_PI);
-	NewViewAngle.Yaw = atan(Rotation.Y / Rotation.X) * (180.f / M_PI);
-	NewViewAngle.Roll = (float)0.f;
+	switch (Settings[AIM_BONE].Value.iValue) {
+	case 0:
+		return MeshComponent->GetSocketLocation(MeshComponent->GetBoneName(MeshComponent->GetBoneIndex(FName(skCrypt("Head")))));
+	case 1:
+		return MeshComponent->GetSocketLocation(MeshComponent->GetBoneName(MeshComponent->GetBoneIndex(FName(skCrypt("neck_01")))));
+	case 2:
+		return MeshComponent->GetSocketLocation(MeshComponent->GetBoneName(MeshComponent->GetBoneIndex(FName(skCrypt("Spine_01")))));
+	case 3:
+	{
+		std::vector<FName> BoneNames = {
+			FName(skCrypt("Head")),
+			FName(skCrypt("neck_01")),
+			FName(skCrypt("Spine_01")),
+			FName(skCrypt("Spine_02")),
+			FName(skCrypt("Spine_03"))
+		};
 
-	if (Rotation.X >= 0.f)
-		NewViewAngle.Yaw += 180.0f;
-	VIRTUALIZER_TIGER_LITE_END;
-	return NewViewAngle;
+		int32_t Index = UKMathLib->RandomIntegerInRange(0, BoneNames.size() - 1);
+		FName RandonBoneName = BoneNames[Index];
+		return MeshComponent->GetSocketLocation(MeshComponent->GetBoneName(MeshComponent->GetBoneIndex(RandonBoneName)));
+	}
+	default:
+		return FVector();
+	}
 }
 
 ATigerCharacter* Game::GetBestPlayer()
