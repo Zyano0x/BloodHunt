@@ -20,66 +20,66 @@ Config BotAddConfig(const std::string pszAppName, const std::string pszKeyName, 
 
 void BotInitSettings()
 {
-	Settings[AIM_ENABLED] = BotAddConfig("Aimbot Settings", "Aimbot_Enabled", false);
-	Settings[AIM_KEY] = BotAddConfig("Aimbot Settings", "Aimbot_Key", 0, 0, 4);
-	Settings[AIM_MODE] = BotAddConfig("Aimbot Settings", "Aimbot_Mode", 0, 0, 2); // Normal, Silent
-	Settings[AIM_SMOOTH] = BotAddConfig("Aimbot Settings", "Aimbot_Smooath", 5.0f, 0.0f, 15.0f);
-	Settings[AIM_BONE] = BotAddConfig("Aimbot Settings", "Aimbot_Bone", 0, 0, 2); // Head, Body, Randomize
-	Settings[FOV] = BotAddConfig("Aimbot Settings", "Aimbot_Fov", false);
-	Settings[FOV_COLOR] = BotAddConfig("Aimbot Settings", "Aimbot_Fov_Color", ImVec4(1.00f, 1.00f, 1.00f, 1.00f));
-	Settings[FOV_RADIUS] = BotAddConfig("Aimbot Settings", "Aimbot_Fov_Radius", 180.0f, 0.0f, 360.0f);
-	Settings[VISIBLE_CHECK] = BotAddConfig("Aimbot Settings", "Aimbot_VisibleCheck", false);
-	Settings[IGNORE_DOWNED] = BotAddConfig("Aimbot Settings", "Aimbot_IgnoreDowned", false);
+	Settings[AIM_ENABLED] = BotAddConfig(std::string(skCrypt("Aimbot Settings")), std::string(skCrypt("Aimbot_Enabled")), false);
+	Settings[AIM_KEY] = BotAddConfig(std::string(skCrypt("Aimbot Settings")), std::string(skCrypt("Aimbot_Key")), 0, 0, 4);
+	Settings[AIM_MODE] = BotAddConfig(std::string(skCrypt("Aimbot Settings")), std::string(skCrypt("Aimbot_Mode")), 0, 0, 2); // Normal, Silent
+	Settings[AIM_SMOOTH] = BotAddConfig(std::string(skCrypt("Aimbot Settings")), std::string(skCrypt("Aimbot_Smooth")), 5.0f, 0.0f, 15.0f);
+	Settings[AIM_BONE] = BotAddConfig(std::string(skCrypt("Aimbot Settings")), std::string(skCrypt("Aimbot_Bone")), 0, 0, 2); // Head, Body, Randomize
+	Settings[FOV] = BotAddConfig(std::string(skCrypt("Aimbot Settings")), std::string(skCrypt("Aimbot_Fov")), false);
+	Settings[FOV_COLOR] = BotAddConfig(std::string(skCrypt("Aimbot Settings")), std::string(skCrypt("Aimbot_Fov_Color")), ImVec4(1.00f, 1.00f, 1.00f, 1.00f));
+	Settings[FOV_RADIUS] = BotAddConfig(std::string(skCrypt("Aimbot Settings")), std::string(skCrypt("Aimbot_Fov_Radius")), 180.0f, 0.0f, 360.0f);
+	Settings[VISIBLE_CHECK] = BotAddConfig(std::string(skCrypt("Aimbot Settings")), std::string(skCrypt("Aimbot_VisibleCheck")), false);
+	Settings[IGNORE_DOWNED] = BotAddConfig(std::string(skCrypt("Aimbot Settings")), std::string(skCrypt("Aimbot_IgnoreDowned")), false);
 
 	//========================================================================
 
-	Settings[ESP_ENABLED] = BotAddConfig("Esp Settings", "Esp_Enabled", false);
-	Settings[ESP_ENEMY] = BotAddConfig("Esp Settings", "Esp_Enemies", false);
-	Settings[ESP_ENEMY_COLOR] = BotAddConfig("Esp Settings", "Esp_EnemyColor", ImVec4(1.00f, 1.00f, 0.64f, 1.00f));
-	Settings[ESP_VISIBLE_COLOR] = BotAddConfig("Esp Settings", "Esp_VisibleColor", ImVec4(0.38f, 0.03f, 0.77f, 1.00f));
-	Settings[ESP_STEALTH_COLOR] = BotAddConfig("Esp Settings", "Esp_StealthColor", ImVec4(0.00f, 0.00f, 0.00f, 1.00f));
-	Settings[ESP_FRIENDLY] = BotAddConfig("Esp Settings", "Esp_Friendlies", false);
-	Settings[ESP_FRIENDLY_COLOR] = BotAddConfig("Esp Settings", "Esp_FriendlyColor", ImVec4(0.08f, 0.64f, 0.84f, 1.00f));
-	Settings[ESP_BOX] = BotAddConfig("Esp Settings", "Esp_Box", 0, 0, 5);
-	Settings[ESP_SNAP_LINES] = BotAddConfig("Esp Settings", "Esp_SnapLines", false);
-	Settings[ESP_NAME] = BotAddConfig("Esp Settings", "Esp_Name", false);
-	Settings[ESP_SKELETON] = BotAddConfig("Esp Settings", "Esp_Skeleton", false);
-	Settings[ESP_DISTANCE] = BotAddConfig("Esp Settings", "Esp_Distance", false);
-	Settings[ESP_HEALTH] = BotAddConfig("Esp Settings", "Esp_Health", false);
-	Settings[ESP_ARMOR] = BotAddConfig("Esp Settings", "Esp_Armor", false);
-	Settings[ESP_WEAPON] = BotAddConfig("Esp Settings", "Esp_Weapon", false);
-	Settings[ESP_GLOW] = BotAddConfig("Esp Settings", "Esp_Glow", false);
-	Settings[ESP_LOOT] = BotAddConfig("Esp Settings", "Esp_Loot", false);
-	Settings[ESP_LOOT_LEVEL] = BotAddConfig("Esp Settings", "Esp_LootLevel", 0, 0, 4);
-	Settings[ESP_FIREARM] = BotAddConfig("Esp Settings", "Esp_Firearm", false);
-	Settings[ESP_MELEE] = BotAddConfig("Esp Settings", "Esp_Melee", false);
-	Settings[ESP_UNARMED] = BotAddConfig("Esp Settings", "Esp_Unarmed", false);
-	Settings[ESP_AMULET] = BotAddConfig("Esp Settings", "Esp_Amulet", false);
-	Settings[ESP_ARTIFACT] = BotAddConfig("Esp Settings", "Esp_Artifact", false);
-	Settings[ESP_BODYARMOR] = BotAddConfig("Esp Settings", "Esp_BodyArmor", false);
-	Settings[ESP_RELIC] = BotAddConfig("Esp Settings", "Esp_Relic", false);
-	Settings[ESP_AMMO] = BotAddConfig("Esp Settings", "Esp_Ammo", false);
-	Settings[ESP_CONSUMABLE] = BotAddConfig("Esp Settings", "Esp_Consumable", false);
-	Settings[ESP_COMBINED_AMMO] = BotAddConfig("Esp Settings", "Esp_CombinedAmmo", false);
-	Settings[ESP_RADAR] = BotAddConfig("Esp Settings", "Esp_Radar", false);
-	Settings[ESP_RADAR_X] = BotAddConfig("Esp Settings", "Esp_RadarX", 250.0f, 120.0f, 2000.0f);
-	Settings[ESP_RADAR_Y] = BotAddConfig("Esp Settings", "Esp_RadarY", 250.0f, 120.0f, 1500.0f);
+	Settings[ESP_ENABLED] = BotAddConfig(std::string(skCrypt("Esp Settings")), std::string(skCrypt("Esp_Enabled")), false);
+	Settings[ESP_ENEMY] = BotAddConfig(std::string(skCrypt("Esp Settings")), std::string(skCrypt("Esp_Enemies")), false);
+	Settings[ESP_ENEMY_COLOR] = BotAddConfig(std::string(skCrypt("Esp Settings")), std::string(skCrypt("Esp_EnemyColor")), ImVec4(1.00f, 1.00f, 0.64f, 1.00f));
+	Settings[ESP_VISIBLE_COLOR] = BotAddConfig(std::string(skCrypt("Esp Settings")), std::string(skCrypt("Esp_VisibleColor")), ImVec4(0.38f, 0.03f, 0.77f, 1.00f));
+	Settings[ESP_STEALTH_COLOR] = BotAddConfig(std::string(skCrypt("Esp Settings")), std::string(skCrypt("Esp_StealthColor")), ImVec4(0.00f, 0.00f, 0.00f, 1.00f));
+	Settings[ESP_FRIENDLY] = BotAddConfig(std::string(skCrypt("Esp Settings")), std::string(skCrypt("Esp_Friendlies")), false);
+	Settings[ESP_FRIENDLY_COLOR] = BotAddConfig(std::string(skCrypt("Esp Settings")), std::string(skCrypt("Esp_FriendlyColor")), ImVec4(0.08f, 0.64f, 0.84f, 1.00f));
+	Settings[ESP_BOX] = BotAddConfig(std::string(skCrypt("Esp Settings")), std::string(skCrypt("Esp_Box")), 0, 0, 5);
+	Settings[ESP_SNAP_LINES] = BotAddConfig(std::string(skCrypt("Esp Settings")), std::string(skCrypt("Esp_SnapLines")), false);
+	Settings[ESP_NAME] = BotAddConfig(std::string(skCrypt("Esp Settings")), std::string(skCrypt("Esp_Name")), false);
+	Settings[ESP_SKELETON] = BotAddConfig(std::string(skCrypt("Esp Settings")), std::string(skCrypt("Esp_Skeleton")), false);
+	Settings[ESP_DISTANCE] = BotAddConfig(std::string(skCrypt("Esp Settings")), std::string(skCrypt("Esp_Distance")), false);
+	Settings[ESP_HEALTH] = BotAddConfig(std::string(skCrypt("Esp Settings")), std::string(skCrypt("Esp_Health")), false);
+	Settings[ESP_ARMOR] = BotAddConfig(std::string(skCrypt("Esp Settings")), std::string(skCrypt("Esp_Armor")), false);
+	Settings[ESP_WEAPON] = BotAddConfig(std::string(skCrypt("Esp Settings")), std::string(skCrypt("Esp_Weapon")), false);
+	Settings[ESP_GLOW] = BotAddConfig(std::string(skCrypt("Esp Settings")), std::string(skCrypt("Esp_Glow")), false);
+	Settings[ESP_LOOT] = BotAddConfig(std::string(skCrypt("Esp Settings")), std::string(skCrypt("Esp_Loot")), false);
+	Settings[ESP_LOOT_LEVEL] = BotAddConfig(std::string(skCrypt("Esp Settings")), std::string(skCrypt("Esp_LootLevel")), 0, 0, 4);
+	Settings[ESP_FIREARM] = BotAddConfig(std::string(skCrypt("Esp Settings")), std::string(skCrypt("Esp_Firearm")), false);
+	Settings[ESP_MELEE] = BotAddConfig(std::string(skCrypt("Esp Settings")), std::string(skCrypt("Esp_Melee")), false);
+	Settings[ESP_UNARMED] = BotAddConfig(std::string(skCrypt("Esp Settings")), std::string(skCrypt("Esp_Unarmed")), false);
+	Settings[ESP_AMULET] = BotAddConfig(std::string(skCrypt("Esp Settings")), std::string(skCrypt("Esp_Amulet")), false);
+	Settings[ESP_ARTIFACT] = BotAddConfig(std::string(skCrypt("Esp Settings")), std::string(skCrypt("Esp_Artifact")), false);
+	Settings[ESP_BODYARMOR] = BotAddConfig(std::string(skCrypt("Esp Settings")), std::string(skCrypt("Esp_BodyArmor")), false);
+	Settings[ESP_RELIC] = BotAddConfig(std::string(skCrypt("Esp Settings")), std::string(skCrypt("Esp_Relic")), false);
+	Settings[ESP_AMMO] = BotAddConfig(std::string(skCrypt("Esp Settings")), std::string(skCrypt("Esp_Ammo")), false);
+	Settings[ESP_CONSUMABLE] = BotAddConfig(std::string(skCrypt("Esp Settings")), std::string(skCrypt("Esp_Consumable")), false);
+	Settings[ESP_COMBINED_AMMO] = BotAddConfig(std::string(skCrypt("Esp Settings")), std::string(skCrypt("Esp_CombinedAmmo")), false);
+	Settings[ESP_RADAR] = BotAddConfig(std::string(skCrypt("Esp Settings")), std::string(skCrypt("Esp_Radar")), false);
+	Settings[ESP_RADAR_X] = BotAddConfig(std::string(skCrypt("Esp Settings")), std::string(skCrypt("Esp_RadarX")), 250.0f, 120.0f, 2000.0f);
+	Settings[ESP_RADAR_Y] = BotAddConfig(std::string(skCrypt("Esp Settings")), std::string(skCrypt("Esp_RadarY")), 250.0f, 120.0f, 1500.0f);
 
-	//========================================================================
+	//==================================================================================================================================================================
 
-	Settings[NO_RECOIL] = BotAddConfig("Misc Settings", "Misc_NoRecoil", false);
-	Settings[NO_SPREAD] = BotAddConfig("Misc Settings", "Misc_NoSpread", false);
+	Settings[NO_RECOIL] = BotAddConfig(std::string(skCrypt("Misc Settings")), std::string(skCrypt("Misc_NoRecoil")), false);
+	Settings[NO_SPREAD] = BotAddConfig(std::string(skCrypt("Misc Settings")), std::string(skCrypt("Misc_NoSpread")), false);
 
-	//========================================================================
+	//==================================================================================================================================================================
 
-	Settings[WINDOW_BG] = BotAddConfig("Menu Settings", "Menu_Window_Bg", ImVec4(0.07f, 0.07f, 0.07f, 1.00f));
-	Settings[CHILD_BG] = BotAddConfig("Menu Settings", "Menu_Child_Bg", ImVec4(0.1f, 0.1f, 0.1f, 1.00f));
-	Settings[TEXT] = BotAddConfig("Menu Settings", "Menu_Text", ImVec4(0.4f, 0.4f, 0.4f, 1.00f));
-	Settings[TEXT_HOVERED] = BotAddConfig("Menu Settings", "Menu_Text_Hovered", ImVec4(0.8f, 0.8f, 0.8f, 1.00f));
-	Settings[TEXT_ACTIVE] = BotAddConfig("Menu Settings", "Menu_Text_Active", ImVec4(1.00f, 1.00f, 1.00f, 1.00f));
-	Settings[FRAME_BG] = BotAddConfig("Menu Settings", "Menu_Frame_Bg", ImVec4(0.2f, 0.2f, 0.2f, 1.00f));
-	Settings[FRAME_BG_HOVERED] = BotAddConfig("Menu Settings", "Menu_Frame_Bg_Hovered", ImVec4(0.4f, 0.4f, 0.4f, 1.00f));
-	Settings[FRAME_BG_ACTIVE] = BotAddConfig("Menu Settings", "Menu_Frame_Bg_Active", ImVec4(1.00f, 0.96, 0.00f, 1.00f));
+	Settings[WINDOW_BG] = BotAddConfig(std::string(skCrypt("Menu Settings")), std::string(skCrypt("Menu_Window_Bg")), ImVec4(0.07f, 0.07f, 0.07f, 1.00f));
+	Settings[CHILD_BG] = BotAddConfig(std::string(skCrypt("Menu Settings")), std::string(skCrypt("Menu_Child_Bg")), ImVec4(0.1f, 0.1f, 0.1f, 1.00f));
+	Settings[TEXT] = BotAddConfig(std::string(skCrypt("Menu Settings")), std::string(skCrypt("Menu_Text")), ImVec4(0.4f, 0.4f, 0.4f, 1.00f));
+	Settings[TEXT_HOVERED] = BotAddConfig(std::string(skCrypt("Menu Settings")), std::string(skCrypt("Menu_Text_Hovered")), ImVec4(0.8f, 0.8f, 0.8f, 1.00f));
+	Settings[TEXT_ACTIVE] = BotAddConfig(std::string(skCrypt("Menu Settings")), std::string(skCrypt("Menu_Text_Active")), ImVec4(1.00f, 1.00f, 1.00f, 1.00f));
+	Settings[FRAME_BG] = BotAddConfig(std::string(skCrypt("Menu Settings")), std::string(skCrypt("Menu_Frame_Bg")), ImVec4(0.2f, 0.2f, 0.2f, 1.00f));
+	Settings[FRAME_BG_HOVERED] = BotAddConfig(std::string(skCrypt("Menu Settings")), std::string(skCrypt("Menu_Frame_Bg_Hover")), ImVec4(0.4f, 0.4f, 0.4f, 1.00f));
+	Settings[FRAME_BG_ACTIVE] = BotAddConfig(std::string(skCrypt("Menu Settings")), std::string(skCrypt("Menu_Frame_Bg_Active")), ImVec4(1.00f, 0.96, 0.00f, 1.00f));
 }
 
 bool BotLoadSettings()

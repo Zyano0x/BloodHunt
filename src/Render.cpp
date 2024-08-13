@@ -1,12 +1,14 @@
 #include "pch.h"
 
-void Render::Menu() {
+void Render::Menu()
+{
 	if (m_IsShowMenu) {
 		MainMenu();
 	}
 }
 
-void Render::MainMenu() {
+void Render::MainMenu()
+{
 	ImGuiIO& io = ImGui::GetIO();
 	ImGuiStyle& Style = ImGui::GetStyle();
 
@@ -30,31 +32,31 @@ void Render::MainMenu() {
 	if (!ImGui::Begin(skCrypt("Nixware"), NULL, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoTitleBar))
 		return;
 
-	ImGui::BeginTabBar("Tabs");
+	ImGui::BeginTabBar(skCrypt("Tabs"));
 	{
-		if (ImGui::BeginTabItem("Aimbot")) {
+		if (ImGui::BeginTabItem(skCrypt("Aimbot"))) {
 			ImVec2 ChildSize = ImVec2(ImGui::GetColumnWidth(), ImGui::GetWindowHeight() - (ImGui::GetCursorPosY() + Style.ItemInnerSpacing.y * 2));
 
-			ImGui::BeginChild("Globals", ChildSize);
+			ImGui::BeginChild(skCrypt("Globals"), ChildSize);
 			{
-				ImGui::Checkbox("Enabled", &Settings[AIM_ENABLED].Value.bValue);
+				ImGui::Checkbox(skCrypt("Enabled"), &Settings[AIM_ENABLED].Value.bValue);
 
 				if (!Settings[AIM_ENABLED].Value.bValue) {
 					ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
 					ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
 				}
 				{
-					ImGui::Checkbox("Visible Check", &Settings[VISIBLE_CHECK].Value.bValue);
-					ImGui::Checkbox("Ignore Downed", &Settings[IGNORE_DOWNED].Value.bValue);
-					ImGui::Combo("Mode", &Settings[AIM_MODE].Value.iValue, "Normal\0" "Silent\0");
-					ImGui::Combo("Hitbox", &Settings[AIM_BONE].Value.iValue, "Head\0" "Body\0" "Randomize\0");
-					ImGui::SliderFloat("Smooth", &Settings[AIM_SMOOTH].Value.fValue, Settings[AIM_SMOOTH].Value.fMin, Settings[AIM_SMOOTH].Value.fMax, "%.1f", ImGuiSliderFlags_NoInput);
+					ImGui::Checkbox(skCrypt("Visible Check"), &Settings[VISIBLE_CHECK].Value.bValue);
+					ImGui::Checkbox(skCrypt("Ignore Downed"), &Settings[IGNORE_DOWNED].Value.bValue);
+					ImGui::Combo(skCrypt("Mode"), &Settings[AIM_MODE].Value.iValue, skCrypt("Normal\0" "Silent\0"));
+					ImGui::Combo(skCrypt("Hitbox"), &Settings[AIM_BONE].Value.iValue, skCrypt("Head\0" "Body\0" "Randomize\0"));
+					ImGui::SliderFloat(skCrypt("Smooth"), &Settings[AIM_SMOOTH].Value.fValue, Settings[AIM_SMOOTH].Value.fMin, Settings[AIM_SMOOTH].Value.fMax, "%.1f", ImGuiSliderFlags_NoInput);
 
 					ImGui::Spacing();
 
-					ImGui::Checkbox("FOV", &Settings[FOV].Value.bValue);
-					ImGui::ColorEdit4("FOV Color", (float*)&Settings[FOV_COLOR].Value.v4Value, ImGuiColorEditFlags_NoBorder | ImGuiColorEditFlags_NoTooltip | ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_NoLabel | ImGuiColorEditFlags_NoDragDrop);
-					ImGui::SliderFloat("FOV Radius", &Settings[FOV_RADIUS].Value.fValue, Settings[FOV_RADIUS].Value.fMin, Settings[FOV_RADIUS].Value.fMax, "%.1f", ImGuiSliderFlags_NoInput);
+					ImGui::Checkbox(skCrypt("FOV"), &Settings[FOV].Value.bValue);
+					ImGui::ColorEdit4(skCrypt("FOV Color"), (float*)&Settings[FOV_COLOR].Value.v4Value, ImGuiColorEditFlags_NoBorder | ImGuiColorEditFlags_NoTooltip | ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_NoLabel | ImGuiColorEditFlags_NoDragDrop);
+					ImGui::SliderFloat(skCrypt("FOV Radius"), &Settings[FOV_RADIUS].Value.fValue, Settings[FOV_RADIUS].Value.fMin, Settings[FOV_RADIUS].Value.fMax, "%.1f", ImGuiSliderFlags_NoInput);
 				}
 				if (!Settings[AIM_ENABLED].Value.bValue) {
 					ImGui::PopItemFlag();
@@ -66,31 +68,32 @@ void Render::MainMenu() {
 			ImGui::EndTabItem();
 		}
 
-		if (ImGui::BeginTabItem("Visuals")) {
+		if (ImGui::BeginTabItem(skCrypt("Visuals"))) {
 			ImVec2 ChildSize = ImVec2((ImGui::GetColumnWidth() - (Style.ItemSpacing.x)) / 2, ImGui::GetWindowHeight() - (ImGui::GetCursorPosY() + Style.ItemInnerSpacing.y * 2));
 
-			ImGui::BeginChild("Player ESP", ChildSize);
+			ImGui::BeginChild(skCrypt("Player ESP"), ChildSize);
 			{
-				ImGui::Checkbox("Enabled ESP", &Settings[ESP_ENABLED].Value.bValue);
+				ImGui::Checkbox(skCrypt("Enabled ESP"), &Settings[ESP_ENABLED].Value.bValue);
 
 				if (!Settings[ESP_ENABLED].Value.bValue) {
 					ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
 					ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
 				}
 				{
-					ImGui::Checkbox("Enemy", &Settings[ESP_ENEMY].Value.bValue);
-					ImGui::ColorEdit4("Enemy Color", (float*)&Settings[ESP_ENEMY_COLOR].Value.v4Value, ImGuiColorEditFlags_NoBorder | ImGuiColorEditFlags_NoTooltip | ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_NoLabel | ImGuiColorEditFlags_NoDragDrop);
-					ImGui::Checkbox("Team", &Settings[ESP_FRIENDLY].Value.bValue);
-					ImGui::ColorEdit4("Team Color", (float*)&Settings[ESP_FRIENDLY_COLOR].Value.v4Value, ImGuiColorEditFlags_NoBorder | ImGuiColorEditFlags_NoTooltip | ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_NoLabel | ImGuiColorEditFlags_NoDragDrop);
-					ImGui::Checkbox("Name", &Settings[ESP_NAME].Value.bValue);
-					ImGui::Checkbox("Skeleton", &Settings[ESP_SKELETON].Value.bValue);
-					ImGui::Checkbox("Snaplines", &Settings[ESP_SNAP_LINES].Value.bValue);
-					ImGui::Checkbox("Distance", &Settings[ESP_DISTANCE].Value.bValue);
-					ImGui::Checkbox("Weapon", &Settings[ESP_WEAPON].Value.bValue);
-					ImGui::Checkbox("Health Bar", &Settings[ESP_HEALTH].Value.bValue);
-					ImGui::Checkbox("Armor Bar", &Settings[ESP_ARMOR].Value.bValue);
-					ImGui::Checkbox("Glow", &Settings[ESP_GLOW].Value.bValue);
-					ImGui::Combo("Box", &Settings[ESP_BOX].Value.iValue, "Off\0""2D Box\0" "2D Box Filled\0" "Corners Box\0" "Corners Box Filled\0");
+					ImGui::Checkbox(skCrypt("Enemy"), &Settings[ESP_ENEMY].Value.bValue);
+					ImGui::ColorEdit4(skCrypt("Enemy Color"), (float*)&Settings[ESP_ENEMY_COLOR].Value.v4Value, ImGuiColorEditFlags_NoBorder | ImGuiColorEditFlags_NoTooltip | ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_NoLabel | ImGuiColorEditFlags_NoDragDrop);
+					ImGui::Checkbox(skCrypt("Team"), &Settings[ESP_FRIENDLY].Value.bValue);
+					ImGui::ColorEdit4(skCrypt("Team Color"), (float*)&Settings[ESP_FRIENDLY_COLOR].Value.v4Value, ImGuiColorEditFlags_NoBorder | ImGuiColorEditFlags_NoTooltip | ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_NoLabel | ImGuiColorEditFlags_NoDragDrop);
+
+					ImGui::Checkbox(skCrypt("Name"), &Settings[ESP_NAME].Value.bValue);
+					ImGui::Checkbox(skCrypt("Skeleton"), &Settings[ESP_SKELETON].Value.bValue);
+					ImGui::Checkbox(skCrypt("Snaplines"), &Settings[ESP_SNAP_LINES].Value.bValue);
+					ImGui::Checkbox(skCrypt("Distance"), &Settings[ESP_DISTANCE].Value.bValue);
+					ImGui::Checkbox(skCrypt("Weapon"), &Settings[ESP_WEAPON].Value.bValue);
+					ImGui::Checkbox(skCrypt("Health Bar"), &Settings[ESP_HEALTH].Value.bValue);
+					ImGui::Checkbox(skCrypt("Armor Bar"), &Settings[ESP_ARMOR].Value.bValue);
+					ImGui::Checkbox(skCrypt("Glow"), &Settings[ESP_GLOW].Value.bValue);
+					ImGui::Combo(skCrypt("Box"), &Settings[ESP_BOX].Value.iValue, skCrypt("Off\0" "2D Box\0" "2D Box Filled\0" "Corners Box\0" "Corners Box Filled\0"));
 				}
 				if (!Settings[ESP_ENABLED].Value.bValue) {
 					ImGui::PopItemFlag();
@@ -101,26 +104,26 @@ void Render::MainMenu() {
 
 			ImGui::SameLine();
 
-			ImGui::BeginChild("Loot ESP", ChildSize);
+			ImGui::BeginChild(skCrypt("Loot ESP"), ChildSize);
 			{
-				ImGui::Checkbox("Enabled Loot", &Settings[ESP_LOOT].Value.bValue);
+				ImGui::Checkbox(skCrypt("Enabled Loot"), &Settings[ESP_LOOT].Value.bValue);
 
 				if (!Settings[ESP_LOOT].Value.bValue) {
 					ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
 					ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
 				}
 				{
-					ImGui::Checkbox("Firearm", &Settings[ESP_FIREARM].Value.bValue);
-					ImGui::Checkbox("Melee", &Settings[ESP_MELEE].Value.bValue);
-					ImGui::Checkbox("Unarmed", &Settings[ESP_UNARMED].Value.bValue);
-					ImGui::Checkbox("Amulet", &Settings[ESP_AMULET].Value.bValue);
-					ImGui::Checkbox("Artifact", &Settings[ESP_ARTIFACT].Value.bValue);
-					ImGui::Checkbox("Armor", &Settings[ESP_BODYARMOR].Value.bValue);
-					ImGui::Checkbox("Relic", &Settings[ESP_RELIC].Value.bValue);
-					ImGui::Checkbox("Ammo", &Settings[ESP_AMMO].Value.bValue);
-					ImGui::Checkbox("Combined Ammo", &Settings[ESP_COMBINED_AMMO].Value.bValue);
-					ImGui::Checkbox("Consumable", &Settings[ESP_CONSUMABLE].Value.bValue);
-					ImGui::Combo("Level", &Settings[ESP_LOOT_LEVEL].Value.iValue, "Common\0" "Uncommon\0" "Rare\0" "Epic\0" "Legendary\0");
+					ImGui::Checkbox(skCrypt("Firearm"), &Settings[ESP_FIREARM].Value.bValue);
+					ImGui::Checkbox(skCrypt("Melee"), &Settings[ESP_MELEE].Value.bValue);
+					ImGui::Checkbox(skCrypt("Unarmed"), &Settings[ESP_UNARMED].Value.bValue);
+					ImGui::Checkbox(skCrypt("Amulet"), &Settings[ESP_AMULET].Value.bValue);
+					ImGui::Checkbox(skCrypt("Artifact"), &Settings[ESP_ARTIFACT].Value.bValue);
+					ImGui::Checkbox(skCrypt("Armor"), &Settings[ESP_BODYARMOR].Value.bValue);
+					ImGui::Checkbox(skCrypt("Relic"), &Settings[ESP_RELIC].Value.bValue);
+					ImGui::Checkbox(skCrypt("Ammo"), &Settings[ESP_AMMO].Value.bValue);
+					ImGui::Checkbox(skCrypt("Combined Ammo"), &Settings[ESP_COMBINED_AMMO].Value.bValue);
+					ImGui::Checkbox(skCrypt("Consumable"), &Settings[ESP_CONSUMABLE].Value.bValue);
+					ImGui::Combo(skCrypt("Level"), &Settings[ESP_LOOT_LEVEL].Value.iValue, skCrypt("Common\0" "Uncommon\0" "Rare\0" "Epic\0" "Legendary\0"));
 				}
 				if (!Settings[ESP_LOOT].Value.bValue) {
 					ImGui::PopItemFlag();
@@ -132,88 +135,88 @@ void Render::MainMenu() {
 			ImGui::EndTabItem();
 		}
 
-		if (ImGui::BeginTabItem("Miscellaneous")) {
+		if (ImGui::BeginTabItem(skCrypt("Miscellaneous"))) {
 			ImVec2 ChildSize = ImVec2(ImGui::GetColumnWidth(), ImGui::GetWindowHeight() - (ImGui::GetCursorPosY() + Style.ItemInnerSpacing.y * 2));
 
-			ImGui::BeginChild("Player", ChildSize);
+			ImGui::BeginChild(skCrypt("Player"), ChildSize);
 			{
-				ImGui::Checkbox("No Recoil", &Settings[NO_RECOIL].Value.bValue);
-				ImGui::Checkbox("No Spread", &Settings[NO_SPREAD].Value.bValue);
-				ImGui::Checkbox("Radar", &Settings[ESP_RADAR].Value.bValue);
+				ImGui::Checkbox(skCrypt("No Recoil"), &Settings[NO_RECOIL].Value.bValue);
+				ImGui::Checkbox(skCrypt("No Spread"), &Settings[NO_SPREAD].Value.bValue);
+				ImGui::Checkbox(skCrypt("Radar"), &Settings[ESP_RADAR].Value.bValue);
 
-				ImGui::SliderFloat("Radar X", &Settings[ESP_RADAR_X].Value.fValue, Settings[ESP_RADAR_X].Value.fMin, Settings[ESP_RADAR_X].Value.fMax);
-				ImGui::SliderFloat("Radar Y", &Settings[ESP_RADAR_Y].Value.fValue, Settings[ESP_RADAR_Y].Value.fMin, Settings[ESP_RADAR_Y].Value.fMax);
+				ImGui::SliderFloat(skCrypt("Radar X"), &Settings[ESP_RADAR_X].Value.fValue, Settings[ESP_RADAR_X].Value.fMin, Settings[ESP_RADAR_X].Value.fMax);
+				ImGui::SliderFloat(skCrypt("Radar Y"), &Settings[ESP_RADAR_Y].Value.fValue, Settings[ESP_RADAR_Y].Value.fMin, Settings[ESP_RADAR_Y].Value.fMax);
 			}
 			ImGui::EndChild();
 
 			ImGui::EndTabItem();
 		}
 
-		if (ImGui::BeginTabItem("Settings")) {
+		if (ImGui::BeginTabItem(skCrypt("Settings"))) {
 			ImVec2 ChildSize = ImVec2((ImGui::GetColumnWidth() - (Style.ItemSpacing.x)) / 2, ImGui::GetWindowHeight() - (ImGui::GetCursorPosY() + Style.ItemInnerSpacing.y * 2));
 
-			ImGui::BeginChild("Info", ChildSize);
+			ImGui::BeginChild(skCrypt("Info"), ChildSize);
 			{
-				ImGui::LabelText("Last update:", __DATE__);
-				ImGui::LabelText("Developer:", "Zyano0x");
+				ImGui::LabelText(skCrypt("Last update:"), __DATE__);
+				ImGui::LabelText(skCrypt("Developer:"), skCrypt("Zyano0x"));
 			}
 			ImGui::EndChild();
 
 			ImGui::SameLine();
 
-			ImGui::BeginChild("Configs", ChildSize);
+			ImGui::BeginChild(skCrypt("Configs"), ChildSize);
 			{
 				float ColumnWidth = ImGui::GetColumnWidth();
 
-				if (ImGui::Button("Load Configs", ImVec2(ColumnWidth - 10.f, 35.f))) {
+				if (ImGui::Button(skCrypt("Load Configs"), ImVec2(ColumnWidth - 10.f, 35.f))) {
 					if (BotLoadSettings()) {
-						ImGui::OpenPopup("Settings Loaded");
+						ImGui::OpenPopup(skCrypt("Settings Loaded"));
 					}
 					else {
-						ImGui::OpenPopup("Loading Failed");
+						ImGui::OpenPopup(skCrypt("Loading Failed"));
 					}
 				}
 
-				if (ImGui::Button("Save Configs", ImVec2(ColumnWidth - 10.f, 35.f))) {
+				if (ImGui::Button(skCrypt("Save Configs"), ImVec2(ColumnWidth - 10.f, 35.f))) {
 					if (BotSaveSettings()) {
-						ImGui::OpenPopup("Settings Saved");
+						ImGui::OpenPopup(skCrypt("Settings Saved"));
 					}
 					else {
-						ImGui::OpenPopup("Saving Failed");
+						ImGui::OpenPopup(skCrypt("Saving Failed"));
 					}
 				}
 
-				if (ImGui::BeginPopupModal("Settings Loaded", 0, ImGuiWindowFlags_AlwaysAutoResize)) {
-					ImGui::Text("The settings have been loaded");
+				if (ImGui::BeginPopupModal(skCrypt("Settings Loaded"), 0, ImGuiWindowFlags_AlwaysAutoResize)) {
+					ImGui::Text(skCrypt("The settings have been loaded"));
 					ImGui::Separator();
-					if (ImGui::Button("OK", ImVec2(70, 0))) {
+					if (ImGui::Button(skCrypt("OK"), ImVec2(70, 0))) {
 						ImGui::CloseCurrentPopup();
 					}
 					ImGui::EndPopup();
 				}
 
-				if (ImGui::BeginPopupModal("Settings Saved", 0, ImGuiWindowFlags_AlwaysAutoResize)) {
-					ImGui::Text("The settings have been saved");
+				if (ImGui::BeginPopupModal(skCrypt("Settings Saved"), 0, ImGuiWindowFlags_AlwaysAutoResize)) {
+					ImGui::Text(skCrypt("The settings have been saved"));
 					ImGui::Separator();
-					if (ImGui::Button("OK", ImVec2(70, 0))) {
+					if (ImGui::Button(skCrypt("OK"), ImVec2(70, 0))) {
 						ImGui::CloseCurrentPopup();
 					}
 					ImGui::EndPopup();
 				}
 
-				if (ImGui::BeginPopupModal("Loading Failed", 0, ImGuiWindowFlags_AlwaysAutoResize)) {
-					ImGui::Text("Failed to load the settings");
+				if (ImGui::BeginPopupModal(skCrypt("Loading Failed"), 0, ImGuiWindowFlags_AlwaysAutoResize)) {
+					ImGui::Text(skCrypt("Failed to load the settings"));
 					ImGui::Separator();
-					if (ImGui::Button("OK", ImVec2(70, 0))) {
+					if (ImGui::Button(skCrypt("OK"), ImVec2(70, 0))) {
 						ImGui::CloseCurrentPopup();
 					}
 					ImGui::EndPopup();
 				}
 
-				if (ImGui::BeginPopupModal("Saving Failed", 0, ImGuiWindowFlags_AlwaysAutoResize)) {
-					ImGui::Text("Failed to save the settings");
+				if (ImGui::BeginPopupModal(skCrypt("Saving Failed"), 0, ImGuiWindowFlags_AlwaysAutoResize)) {
+					ImGui::Text(skCrypt("Failed to save the settings"));
 					ImGui::Separator();
-					if (ImGui::Button("OK", ImVec2(70, 0))) {
+					if (ImGui::Button(skCrypt("OK"), ImVec2(70, 0))) {
 						ImGui::CloseCurrentPopup();
 					}
 					ImGui::EndPopup();
@@ -230,7 +233,8 @@ void Render::MainMenu() {
 	ImGui::PopStyleVar();
 }
 
-void Render::Radar() {
+void Render::Radar()
+{
 	if (!Settings[ESP_RADAR].Value.bValue)
 		return;
 

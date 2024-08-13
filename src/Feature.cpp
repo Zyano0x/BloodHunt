@@ -286,7 +286,7 @@ void Game::Visual()
 					if (HWidth > 3.0f)
 						HWidth = 3.0f;
 
-					Draw::VerticalHealthBar(HeadPos.X - (W / 2.0f) - 5.0f, HeadPos.Y, HWidth, FootPos.Y - HeadPos.Y, (int)Percent, true, BarType::Health);
+					Draw::VerticalHealthBar(HeadPos.X - (W / 2.0f) - 4.0f, HeadPos.Y, HWidth, FootPos.Y - HeadPos.Y, (int)Percent, true, BarType::Health);
 				}
 			}
 
@@ -303,7 +303,7 @@ void Game::Visual()
 						HWidth = 3.0f;
 
 					if (Shield != 0 && MaxShield != 0) {
-						Draw::VerticalHealthBar(HeadPos.X + (W / 2.0f) + 3.0f, HeadPos.Y, HWidth, FootPos.Y - HeadPos.Y, Percent, true, BarType::Shield);
+						Draw::VerticalHealthBar(HeadPos.X + (W / 2.0f) + 4.0f, HeadPos.Y, HWidth, FootPos.Y - HeadPos.Y, Percent, true, BarType::Shield);
 					}
 				}
 			}
@@ -399,7 +399,7 @@ void Game::Visual()
 
 void Game::Aimbot()
 {
-	VIRTUALIZER_TIGER_LONDON_START;
+	VIRTUALIZER_TIGER_LITE_START;
 	if (!Settings[AIM_ENABLED].Value.bValue)
 		return;
 
@@ -432,12 +432,12 @@ void Game::Aimbot()
 			LocalPlayerController->SetControlRotation(NewRotation);
 		}
 	}
-	VIRTUALIZER_TIGER_LONDON_END;
+	VIRTUALIZER_TIGER_LITE_END;
 }
 
 void Game::Misc()
 {
-	VIRTUALIZER_TIGER_LONDON_START;
+	VIRTUALIZER_TIGER_LITE_START;
 	if (!Check())
 		return;
 
@@ -453,7 +453,7 @@ void Game::Misc()
 		EquippedWeapon->VerticalRecoilCurve = nullptr;
 		EquippedWeapon->HorizontalRecoilCurve = nullptr;
 	}
-	VIRTUALIZER_TIGER_LONDON_END;
+	VIRTUALIZER_TIGER_LITE_END;
 }
 
 void Game::Radar()
@@ -544,7 +544,7 @@ void Game::LootName(bool Setting, bool Rarity, std::string Name, int Distance, F
 	if (Setting && Rarity) {
 		Draw::DrawString(
 			ImGui::GetIO().FontDefault,
-			Name.append(std::to_string(Distance)).append(std::string(" M ")),
+			Name.append(std::to_string(Distance)).append(std::string(skCrypt(" M "))),
 			Position.X,
 			Position.Y,
 			15.0f,
