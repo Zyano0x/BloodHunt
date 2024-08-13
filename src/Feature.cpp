@@ -163,7 +163,6 @@ void Game::Visual()
 			continue;
 
 		if (ShowEnemy) {
-			FHitResult HitResult;
 			if (LocalPlayerController->LineOfSightTo(Player, { 0.0f, 0.0f, 0.0f }, false))
 				VEC4CPY(Settings[ESP_VISIBLE_COLOR].Value.v4Value, m_Color);
 			else
@@ -191,6 +190,7 @@ void Game::Visual()
 					if (PlayerName.IsValid()) {
 						Draw::DrawString(ImGui::GetIO().FontDefault, PlayerName.ToString(), (X + (HeadPos.X + W * 0.5f)) / 2, Y - 20, 15.0f, true, ImVec4(1.0f, 1.0f, 1.0f, 1.0f));
 					}
+					UEngine::FreeMemory(PlayerName.Data());
 				}
 			}
 
@@ -303,7 +303,7 @@ void Game::Visual()
 						HWidth = 3.0f;
 
 					if (Shield != 0 && MaxShield != 0) {
-						Draw::VerticalHealthBar(HeadPos.X + (W / 2.0f) + 5.0f, HeadPos.Y, HWidth, FootPos.Y - HeadPos.Y, Percent, true, BarType::Shield);
+						Draw::VerticalHealthBar(HeadPos.X + (W / 2.0f) + 3.0f, HeadPos.Y, HWidth, FootPos.Y - HeadPos.Y, Percent, true, BarType::Shield);
 					}
 				}
 			}
