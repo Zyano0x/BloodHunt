@@ -68,6 +68,7 @@
 
 #include "VirtualizerSDK_TIGER_LONDON.h"
 #include "VirtualizerSDK_TIGER_LITE.h"
+#include "VirtualizerSDK_CustomVMs.h"
 
 // ***********************************************
 // link with correct platform library

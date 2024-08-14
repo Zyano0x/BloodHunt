@@ -118,8 +118,7 @@ void Game::Visual()
 		if (!ObjectName.IsValid())
 			continue;
 
-		if ((wcsstr(ObjectName.wc_str(), skCrypt(L"TBP_ElysiumPlayer_C")) || wcsstr(ObjectName.wc_str(), skCrypt(L"TBP_Player_C")) ||
-			 wcsstr(ObjectName.wc_str(), skCrypt(L"TBP_NPC_Primogen_C")) || wcsstr(ObjectName.wc_str(), skCrypt(L"TBP_NPC_C")))) {
+		if (Actor->IsA(ATigerCharacter::StaticClass())) {
 			Players.push_back(static_cast<ATigerCharacter*>(Actor));
 		}
 
@@ -146,6 +145,9 @@ void Game::Visual()
 			continue;
 
 		if (Player == LocalCharacter)
+			continue;
+
+		if (Player->CharacterType == ETigerCharacterType::Npc || Player->CharacterType == ETigerCharacterType::TargetDummy || Player->CharacterType == ETigerCharacterType::TutorialTrainer)
 			continue;
 
 		if (Player->IsDead())
@@ -235,7 +237,7 @@ void Game::Visual()
 						Draw::DrawLine(BoneScreen.X, BoneScreen.Y, PrevBoneScreen.X, PrevBoneScreen.Y, 1.6f, m_Color);
 				}
 
-				float HeadCircleRadius = CalculateHeadCircleRadius(Distance);
+				float HeadCircleRadius = CalcHeadCircleRadius(Distance);
 				FVector Head = MeshComponent->GetSocketLocation(MeshComponent->GetBoneName(MeshComponent->GetBoneIndex(FName(skCrypt("Head")))));
 				LocalPlayerController->ProjectWorldLocationToScreen(Head, &HeadScreen, false);
 
@@ -421,7 +423,7 @@ void Game::Aimbot()
 	if (!IsValid(BestPlayer))
 		return;
 
-	PredictLocation = g_Game->CalcPredition(LocalCharacter, BestPlayer, WorldSettings);
+	PredictLocation = g_Game->Prediction(LocalCharacter, BestPlayer, WorldSettings);
 	if (!PredictLocation.IsValid())
 		return;
 
@@ -520,9 +522,9 @@ void Game::Radar()
 	}
 }
 
-float Game::CalculateHeadCircleRadius(float Distance)
+float Game::CalcHeadCircleRadius(float Distance)
 {
-	VIRTUALIZER_TIGER_LITE_START;
+	VIRTUALIZER_MUTATE_ONLY_START;
 	const float MinDistance = 0.0f;
 	const float MaxDistance = 100.0f;
 	const float MinRadius = 0.5f;
@@ -538,12 +540,12 @@ float Game::CalculateHeadCircleRadius(float Distance)
 		float t = (Distance - MinDistance) / (MaxDistance - MinDistance);
 		return MaxRadius + t * (MinRadius - MaxRadius);
 	}
-	VIRTUALIZER_TIGER_LITE_END;
+	VIRTUALIZER_MUTATE_ONLY_END;
 }
 
 void Game::LootName(bool Setting, bool Rarity, std::string Name, int Distance, FVector2D Position, ImVec4 Color)
 {
-	VIRTUALIZER_TIGER_LITE_START;
+	VIRTUALIZER_MUTATE_ONLY_START;
 	if (Setting && Rarity) {
 		Draw::DrawString(
 			ImGui::GetIO().FontDefault,
@@ -555,7 +557,7 @@ void Game::LootName(bool Setting, bool Rarity, std::string Name, int Distance, F
 			Color
 		);
 	}
-	VIRTUALIZER_TIGER_LITE_END;
+	VIRTUALIZER_MUTATE_ONLY_END;
 }
 
 FVector2D Game::WorldToRadar(FRotator Rotation, FVector Location, FVector EntityLocation, FVector2D RadarCenter, float RadarRadius)
@@ -603,11 +605,11 @@ FRotator Game::CalcAngle(FVector Src, FVector Dst, FRotator OldRotation, float S
 	FRotator CpYaT = OldRotation;
 	Yaptr.Pitch -= CpYaT.Pitch;
 	Yaptr.Yaw -= CpYaT.Yaw;
-	Yaptr.Roll = 0.f;
+	Yaptr.Roll = 0.0f;
 	Yaptr.Clamp();
 	CpYaT.Pitch += Yaptr.Pitch / Smoothing;
 	CpYaT.Yaw += Yaptr.Yaw / Smoothing;
-	CpYaT.Roll = 0.f;
+	CpYaT.Roll = 0.0f;
 	VIRTUALIZER_TIGER_LITE_END;
 	return CpYaT;
 }
@@ -618,9 +620,9 @@ FRotator Game::CalcAngle(FVector Target)
 	FVector Rotation = LocalPlayerCamera->GetCameraLocation() - Target;
 	FRotator NewViewAngle = { 0, 0, 0 };
 	float hyp = sqrt(Rotation.X * Rotation.X + Rotation.Y * Rotation.Y);
-	NewViewAngle.Pitch = -atan(Rotation.Z / hyp) * (180.f / M_PI);
-	NewViewAngle.Yaw = atan(Rotation.Y / Rotation.X) * (180.f / M_PI);
-	NewViewAngle.Roll = (float)0.f;
+	NewViewAngle.Pitch = -atan(Rotation.Z / hyp) * (180.0f / M_PI);
+	NewViewAngle.Yaw = atan(Rotation.Y / Rotation.X) * (180.0f / M_PI);
+	NewViewAngle.Roll = (float)0.0f;
 
 	if (Rotation.X >= 0.f)
 		NewViewAngle.Yaw += 180.0f;
@@ -628,7 +630,7 @@ FRotator Game::CalcAngle(FVector Target)
 	return NewViewAngle;
 }
 
-FVector Game::Prediction(float BulletVelocity, float BulletGravity, float TargetDistance, FVector TargetPosition, FVector TargetVelocity)
+FVector Game::CalcPrediction(float BulletVelocity, float BulletGravity, float TargetDistance, FVector TargetPosition, FVector TargetVelocity)
 {
 	VIRTUALIZER_TIGER_LITE_START;
 	FVector Recalculated = TargetPosition;
@@ -643,9 +645,9 @@ FVector Game::Prediction(float BulletVelocity, float BulletGravity, float Target
 	return Recalculated;
 }
 
-FVector Game::CalcPredition(ATigerCharacter* LocalCharacter, ATigerCharacter* TargetCharacter, AWorldSettings* World)
+FVector Game::Prediction(ATigerCharacter* LocalCharacter, ATigerCharacter* TargetCharacter, AWorldSettings* World)
 {
-	VIRTUALIZER_TIGER_LITE_START;
+	VIRTUALIZER_MUTATE_ONLY_START;
 	FVector Out = FVector();
 	FVector TargetLocation = GetAimWorldLocation(TargetCharacter);
 	FVector Velocity = TargetCharacter->CharacterMovement->LastUpdateVelocity;
@@ -654,8 +656,8 @@ FVector Game::CalcPredition(ATigerCharacter* LocalCharacter, ATigerCharacter* Ta
 	float Gravity = World->WorldGravityZ;
 	float Distance = LocalPlayerCamera->GetCameraLocation().Distance(TargetLocation) / 100.0f;
 
-	Out = Prediction(BulletSpeed, Gravity, Distance, TargetLocation, Velocity);
-	VIRTUALIZER_TIGER_LITE_END;
+	Out = CalcPrediction(BulletSpeed, Gravity, Distance, TargetLocation, Velocity);
+	VIRTUALIZER_MUTATE_ONLY_END;
 	return Out.IsValid() ? Out : FVector();
 }
 

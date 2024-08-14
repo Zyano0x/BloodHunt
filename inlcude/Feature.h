@@ -19,13 +19,13 @@ public:
 	void Misc();
 	void Radar();
 
-	float CalculateHeadCircleRadius(float Distance);
+	float CalcHeadCircleRadius(float Distance);
 	void LootName(bool Setting, bool Rarity, std::string Name, int Distance, FVector2D Position, ImVec4 Color);
 	FVector2D WorldToRadar(FRotator Rotation, FVector Location, FVector EntityLocation, FVector2D RadarCenter, float RadarRadius);
 	FRotator CalcAngle(FVector Src, FVector Dst, FRotator OldRotation, float Smoothing);
 	FRotator CalcAngle(FVector Target);
-	FVector Prediction(float BulletVelocity, float BulletGravity, float TargetDistance, FVector TargetPosition, FVector TargetVelocity);
-	FVector CalcPredition(ATigerCharacter* LocalCharacter, ATigerCharacter* TargetCharacter, AWorldSettings* World);
+	FVector CalcPrediction(float BulletVelocity, float BulletGravity, float TargetDistance, FVector TargetPosition, FVector TargetVelocity);
+	FVector Prediction(ATigerCharacter* LocalCharacter, ATigerCharacter* TargetCharacter, AWorldSettings* World);
 	FVector GetAimWorldLocation(ATigerCharacter* Player);
 	ATigerCharacter* GetBestPlayer();
 	ImVec4 GetItemRarityColor(ETigerItemRarity Quality);
