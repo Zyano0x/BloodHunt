@@ -491,6 +491,9 @@ void Game::Radar()
 			if (Player->CharacterType == ETigerCharacterType::Npc || Player->CharacterType == ETigerCharacterType::TargetDummy || Player->CharacterType == ETigerCharacterType::TutorialTrainer)
 				continue;
 
+			if (Player->IsDead())
+				continue;
+
 			bool IsTeammate = Player->IsFriendlyWith(LocalCharacter);
 
 			bool ShowEnemy = !IsTeammate && Settings[ESP_ENEMY].Value.bValue;
@@ -717,6 +720,9 @@ ATigerCharacter* Game::GetBestPlayer()
 				continue;
 
 			if (Player->CharacterType == ETigerCharacterType::Npc || Player->CharacterType == ETigerCharacterType::TargetDummy || Player->CharacterType == ETigerCharacterType::TutorialTrainer)
+				continue;
+
+			if (Player->IsDead())
 				continue;
 
 			if (Settings[IGNORE_DOWNED].Value.bValue && Player->IsDowned())
