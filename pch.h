@@ -22,7 +22,9 @@
 #include "MinHook/MinHook.h"
 #pragma comment(lib, "MinHook.lib")
 
-#include "Virtualizer/VirtualizerSDK.h"
+#include "Virtualizer/VirtualizerSDKMacros.h"
+#include "Virtualizer/VirtualizerSDK_TIGER_LITE.h"
+#include "Virtualizer/VirtualizerSDK_TIGER_LONDON.h"
 
 #include "ImGui/imgui.h"
 #include "ImGui/imgui_impl_dx11.h"
@@ -31,7 +33,6 @@
 
 #include "Font/Fonts.h"
 
-#include "Lazy.h"
 #include "Obfuscate.h"
 #include "Memory.h"
 #include "RetSpoofer.h"

@@ -6,7 +6,7 @@ Console::Console(const char* Title) { Initialize(Title); }
 
 Console::Console(const char* Title, bool bShow) { Initialize(Title, bShow); }
 
-Console::~Console() { DestroyConsole(); }
+Console::~Console() {}
 
 HANDLE Console::GetHandle() { return this->p_Handle; }
 
@@ -16,8 +16,7 @@ void Console::Clear() { system(skCrypt("cls")); }
 
 void Console::Initialize(const char* ConsoleName, bool bShowWindow)
 {
-	if (Console::m_IsInit)
-	{
+	if (Console::m_IsInit) {
 		LogError(skCrypt("[!] [Console::InitializeConsole] Failed To Initialize Console.\n"));
 		return;
 	}

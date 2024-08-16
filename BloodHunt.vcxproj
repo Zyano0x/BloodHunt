@@ -175,7 +175,6 @@
     <ClInclude Include="inlcude\DX11.h" />
     <ClInclude Include="inlcude\Feature.h" />
     <ClInclude Include="inlcude\Hooking.h" />
-    <ClInclude Include="inlcude\Lazy.h" />
     <ClInclude Include="inlcude\Memory.h" />
     <ClInclude Include="inlcude\Obfuscate.h" />
     <ClInclude Include="inlcude\Render.h" />
@@ -234,6 +233,10 @@
     <MASM Include="inlcude\RetSpoofer.asm">
       <FileType>Document</FileType>
     </MASM>
+    <MASM Include="libs\Virtualizer\VirtualizerSDKCustomVmMacros.asm" />
+    <MASM Include="libs\Virtualizer\VirtualizerSDKMacros.asm" />
+    <MASM Include="libs\Virtualizer\VirtualizerSDK_TIGER_LITE.asm" />
+    <MASM Include="libs\Virtualizer\VirtualizerSDK_TIGER_LONDON.asm" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -18,6 +18,30 @@ bool InitSDK(const std::wstring& ModuleName, uintptr_t gObjectsOffset, uintptr_t
 	return true;
 }
 
+float UGameplayStatics::GetWorldDeltaSeconds(const UObject* WorldContextObject)
+{
+	static UFunction* fn = nullptr;
+	if (!fn)
+		fn = UObject::FindObject<UFunction>(std::string(skCrypt("Function Engine.GameplayStatics.GetWorldDeltaSeconds")));
+
+	struct UGameplayStatics_GetWorldDeltaSeconds_Params
+	{
+	public:
+		const class UObject* WorldContextObject;                                // 0x0000(0x0008)(ConstParm, Parm, ZeroConstructor, IsPlainOldData, NoDestructor, HasGetValueTypeHash, NativeAccessSpecifierPublic)
+		float ReturnValue;                                       // 0x0008(0x0004)(Parm, OutParm, ZeroConstructor, ReturnParm, IsPlainOldData, NoDestructor, HasGetValueTypeHash, NativeAccessSpecifierPublic)
+		uint8_t Pad_C[0x4];                                        // 0x000C(0x0004)(Fixing Struct Size After Last Property [ Dumper-7 ])
+	};
+
+	UGameplayStatics_GetWorldDeltaSeconds_Params params{};
+	params.WorldContextObject = WorldContextObject;
+
+	auto flags = fn->FunctionFlags;
+	UObject::ProcessEvent(fn, &params);
+	fn->FunctionFlags = flags;
+
+	return params.ReturnValue;
+}
+
 float UKismetMathLibrary::Vector_Distance(const FVector& v1, const FVector& v2)
 {
 	static UFunction* fn = nullptr;
@@ -60,6 +84,35 @@ FRotator UKismetMathLibrary::FindLookAtRotation(const FVector& Start, const FVec
 	UKismetMathLibrary_FindLookAtRotation_Params params{};
 	params.Start = Start;
 	params.Target = Target;
+
+	auto flags = fn->FunctionFlags;
+	UObject::ProcessEvent(fn, &params);
+	fn->FunctionFlags = flags;
+
+	return params.ReturnValue;
+}
+
+FRotator UKismetMathLibrary::RInterpTo(const FRotator& Current, const FRotator& Target, float DeltaTime, float InterpSpeed)
+{
+	static UFunction* fn = nullptr;
+	if (!fn)
+		fn = UObject::FindObject<UFunction>(std::string(skCrypt("Function Engine.KismetMathLibrary.RInterpTo")));
+
+	struct UKismetMathLibrary_RInterpTo_Params
+	{
+	public:
+		struct FRotator                               Current;                                           // 0x0000(0x000C)(Parm, ZeroConstructor, IsPlainOldData, NoDestructor, NativeAccessSpecifierPublic)
+		struct FRotator                               Target;                                            // 0x000C(0x000C)(Parm, ZeroConstructor, IsPlainOldData, NoDestructor, NativeAccessSpecifierPublic)
+		float                                         DeltaTime;                                         // 0x0018(0x0004)(Parm, ZeroConstructor, IsPlainOldData, NoDestructor, HasGetValueTypeHash, NativeAccessSpecifierPublic)
+		float                                         InterpSpeed;                                       // 0x001C(0x0004)(Parm, ZeroConstructor, IsPlainOldData, NoDestructor, HasGetValueTypeHash, NativeAccessSpecifierPublic)
+		struct FRotator                               ReturnValue;                                       // 0x0020(0x000C)(Parm, OutParm, ZeroConstructor, ReturnParm, IsPlainOldData, NoDestructor, NativeAccessSpecifierPublic)
+	};
+
+	UKismetMathLibrary_RInterpTo_Params params{};
+	params.Current = std::move(Current);
+	params.Target = std::move(Target);
+	params.DeltaTime = DeltaTime;
+	params.InterpSpeed = InterpSpeed;
 
 	auto flags = fn->FunctionFlags;
 	UObject::ProcessEvent(fn, &params);

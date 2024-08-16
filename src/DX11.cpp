@@ -177,7 +177,7 @@ void DX11Window::Overlay(IDXGISwapChain* SwapChain)
 void Initialize()
 {
 	VIRTUALIZER_TIGER_LONDON_START;
-	g_Console->Initialize("Debug Console");
+	//g_Console->Initialize("Debug Console");
 	g_Game->Hook();
 	g_DX11Window->Hook();
 	g_Hooking->Initialize();
@@ -190,12 +190,6 @@ void Deallocate()
 	g_Game->UnHook();
 	g_DX11Window->Unhook();
 	g_Hooking->Shutdown();
-	g_Console->DestroyConsole();
-
-	g_DX11Window.release();
-	g_Console.release();
-	g_Render.release();
-	g_Game.release();
-	g_Hooking.release();
+	//g_Console->DestroyConsole();
 	VIRTUALIZER_TIGER_LONDON_END;
 }

@@ -5,8 +5,7 @@ static void memcpy_(void* _Dst, void const* _Src, size_t _Size)
 	auto csrc = (char*)_Src;
 	auto cdest = (char*)_Dst;
 
-	for (int i = 0; i < _Size; i++)
-	{
+	for (int i = 0; i < _Size; i++) {
 		cdest[i] = csrc[i];
 	}
 }
@@ -24,8 +23,7 @@ void SwapVTable(void* Obj, void* Func, int Index, void** Ret)
 
 	// We make our own copy of the vtable
 	auto Fake_VTable = new uint64_t[Methods * sizeof(uintptr_t)];
-	for (auto Count = 0; Count < Methods; ++Count)
-	{
+	for (auto Count = 0; Count < Methods; ++Count) {
 		Fake_VTable[Count] = *(uintptr_t*)((uintptr_t)VTable + (Count * sizeof(uintptr_t)));
 
 		*Ret = (void*)VTable[Index];
@@ -38,20 +36,17 @@ void SwapVTable(void* Obj, void* Func, int Index, void** Ret)
 
 bool GetKeyPress(int VKey, bool Immediate)
 {
-	if (VirtualKeys[VKey].bKey)
-	{
+	if (VirtualKeys[VKey].bKey) {
 		VirtualKeys[VKey].bUp = false;
 		VirtualKeys[VKey].bDown = true;
 	}
 
-	else if (!VirtualKeys[VKey].bKey && VirtualKeys[VKey].bDown)
-	{
+	else if (!VirtualKeys[VKey].bKey && VirtualKeys[VKey].bDown) {
 		VirtualKeys[VKey].bUp = true;
 		VirtualKeys[VKey].bDown = false;
 	}
 
-	else
-	{
+	else {
 		VirtualKeys[VKey].bUp = false;
 		VirtualKeys[VKey].bDown = false;
 	}
@@ -74,8 +69,7 @@ void Memory::Allocator::Clear()
 {
 	std::lock_guard _(this->mutex_);
 
-	for (auto& data : this->pool_)
-	{
+	for (auto& data : this->pool_) {
 		Memory::Free(data);
 	}
 
@@ -87,8 +81,7 @@ void Memory::Allocator::Free(void* data)
 	std::lock_guard _(this->mutex_);
 
 	const auto j = std::find(this->pool_.begin(), this->pool_.end(), data);
-	if (j != this->pool_.end())
-	{
+	if (j != this->pool_.end()) {
 		Memory::Free(data);
 		this->pool_.erase(j);
 	}
@@ -120,8 +113,7 @@ void* Memory::Allocate(const size_t length)
 
 void Memory::Free(void* data)
 {
-	if (data)
-	{
+	if (data) {
 		::free(data);
 	}
 }
@@ -135,10 +127,8 @@ bool Memory::IsSet(const void* mem, const char chr, const size_t length)
 {
 	const auto mem_arr = static_cast<const char*>(mem);
 
-	for (size_t i = 0; i < length; ++i)
-	{
-		if (mem_arr[i] != chr)
-		{
+	for (size_t i = 0; i < length; ++i) {
+		if (mem_arr[i] != chr) {
 			return false;
 		}
 	}
@@ -153,34 +143,30 @@ Memory::Allocator* Memory::GetAllocator()
 
 std::uint8_t* FindSignature(LPCSTR module_name, const std::string& byte_array)
 {
-	HMODULE module = LI_FN(GetModuleHandleA).safe()(module_name);
+	HMODULE module = GetModuleHandleA(module_name);
 
 	if (!module)
 		return nullptr;
 
-	static const auto pattern_to_byte = [](const char* pattern)
-		{
-			auto bytes = std::vector<int>{};
-			const auto start = const_cast<char*>(pattern);
-			const auto end = const_cast<char*>(pattern) + std::strlen(pattern);
+	static const auto pattern_to_byte = [](const char* pattern) {
+		auto bytes = std::vector<int>{};
+		const auto start = const_cast<char*>(pattern);
+		const auto end = const_cast<char*>(pattern) + std::strlen(pattern);
 
-			for (auto current = start; current < end; ++current)
-			{
+		for (auto current = start; current < end; ++current) {
+			if (*current == '?') {
+				++current;
+
 				if (*current == '?')
-				{
 					++current;
 
-					if (*current == '?')
-						++current;
-
-					bytes.push_back(-1);
-				}
-				else
-				{
-					bytes.push_back(std::strtoul(current, &current, 16));
-				}
+				bytes.push_back(-1);
 			}
-			return bytes;
+			else {
+				bytes.push_back(std::strtoul(current, &current, 16));
+			}
+		}
+		return bytes;
 		};
 
 	const auto dos_header = reinterpret_cast<PIMAGE_DOS_HEADER>(module);
@@ -194,12 +180,10 @@ std::uint8_t* FindSignature(LPCSTR module_name, const std::string& byte_array)
 	const auto pattern_size = pattern_bytes.size();
 	const auto pattern_data = pattern_bytes.data();
 
-	for (auto i = 0ul; i < size_of_image - pattern_size; ++i)
-	{
+	for (auto i = 0ul; i < size_of_image - pattern_size; ++i) {
 		auto found = true;
 
-		for (auto j = 0ul; j < pattern_size; ++j)
-		{
+		for (auto j = 0ul; j < pattern_size; ++j) {
 			if (scan_bytes[i + j] == pattern_data[j] || pattern_data[j] == -1)
 				continue;
 			found = false;
@@ -311,9 +295,8 @@ int VMTShadow::GetVTableSize()
 	int i = 0;
 
 	// Query memory regions until VirtualQuery fails
-	while (VirtualQuery(reinterpret_cast<LPCVOID>(this->m_Ptr_Object_VTable[i]), &mbi, sizeof(mbi)))
-	{
-#define PAGE_EXECUTABLE ( PAGE_EXECUTE | PAGE_EXECUTE_READ | PAGE_EXECUTE_READWRITE | PAGE_EXECUTE_WRITECOPY )
+	while (VirtualQuery(reinterpret_cast<LPCVOID>(this->m_Ptr_Object_VTable[i]), &mbi, sizeof(mbi))) {
+	#define PAGE_EXECUTABLE ( PAGE_EXECUTE | PAGE_EXECUTE_READ | PAGE_EXECUTE_READWRITE | PAGE_EXECUTE_WRITECOPY )
 
 		// Break on invalid pointers
 		if ((mbi.State != MEM_COMMIT) || (mbi.Protect & (PAGE_GUARD | PAGE_NOACCESS)) || !(mbi.Protect & PAGE_EXECUTABLE))
@@ -328,8 +311,7 @@ int VMTShadow::GetVTableSize()
 
 uintptr_t* VMTShadow::Apply(int Index, uintptr_t* HookFunction)
 {
-	if (Index < 0 || Index >= m_Object_VTable_Size)
-	{
+	if (Index < 0 || Index >= m_Object_VTable_Size) {
 		// Index out of bounds
 		return nullptr;
 	}
@@ -357,8 +339,7 @@ void VMTShadow::Remove(int Index)
 
 void VMTShadow::FreeFakeVTable()
 {
-	if (m_Ptr_Object_Fake_VTable)
-	{
+	if (m_Ptr_Object_Fake_VTable) {
 		// Restore the original VTable pointer to the object
 		*reinterpret_cast<uintptr_t**>(m_Ptr_Object) = m_Ptr_Object_VTable;
 

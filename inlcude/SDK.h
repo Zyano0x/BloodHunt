@@ -602,6 +602,7 @@ class UKismetMathLibrary : public UObject
 public:
 	float Vector_Distance(const struct FVector& v1, const struct FVector& v2);
 	FRotator FindLookAtRotation(const struct FVector& Start, const struct FVector& Target);
+	FRotator RInterpTo(const struct FRotator& Current, const struct FRotator& Target, float DeltaTime, float InterpSpeed);
 	int32_t RandomIntegerInRange(int32_t Min, int32_t Max);
 
 public:
@@ -610,6 +611,21 @@ public:
 		static UClass* ptr = nullptr;
 		if (!ptr)
 			ptr = UObject::FindClass(std::string(skCrypt("Class Engine.KismetMathLibrary")));
+		return ptr;
+	}
+};
+
+class UGameplayStatics : public UObject
+{
+public:
+	float GetWorldDeltaSeconds(const class UObject* WorldContextObject);
+
+public:
+	static inline UClass* StaticClass()
+	{
+		static UClass* ptr = nullptr;
+		if (!ptr)
+			ptr = UObject::FindClass(std::string(skCrypt("Class Engine.GameplayStatics")));
 		return ptr;
 	}
 };

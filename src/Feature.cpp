@@ -4,7 +4,7 @@ Game::Game() {}
 
 Game::~Game() {}
 
-void __fastcall Game::GetViewPointHook(ULocalPlayer* LocalPlayer, FMinimalViewInfo* OutViewInfo)
+void Game::GetViewPointHook(ULocalPlayer* LocalPlayer, FMinimalViewInfo* OutViewInfo)
 {
 	g_Game->GetViewPoint(LocalPlayer, OutViewInfo);
 	if (Settings[AIM_MODE].Value.iValue == 1 && Settings[AIM_ENABLED].Value.bValue) {
@@ -17,7 +17,7 @@ void __fastcall Game::GetViewPointHook(ULocalPlayer* LocalPlayer, FMinimalViewIn
 	}
 }
 
-void __fastcall Game::GetPlayerViewPointHook(APlayerController* PlayerController, FVector* Location, FRotator* Rotation)
+void Game::GetPlayerViewPointHook(APlayerController* PlayerController, FVector* Location, FRotator* Rotation)
 {
 	g_Game->GetPlayerViewPoint(PlayerController, Location, Rotation);
 	g_Game->OriginalLocation = *Location;
@@ -45,6 +45,7 @@ void Game::Hook()
 
 	UKSystemLib = reinterpret_cast<UKismetSystemLibrary*>(UKismetSystemLibrary::StaticClass());
 	UKMathLib = reinterpret_cast<UKismetMathLibrary*>(UKismetMathLibrary::StaticClass());
+	UGStatics = reinterpret_cast<UGameplayStatics*>(UGameplayStatics::StaticClass());
 
 	GetViewPointAddr = Signature("4C 8B DC 49 89 5B ? 55 56 57 48 81 EC ? ? ? ? 48 8B 05 ? ? ? ? 48 33 C4 48 89 84 24 ? ? ? ? 41 0F 29 73").GetPointer();
 	GetPlayerViewPointAddr = Signature("48 89 5C 24 ? 48 89 74 24 ? 55 41 56 41 57 48 8B EC 48 83 EC ? 48 8B F2").GetPointer();
@@ -427,11 +428,11 @@ void Game::Aimbot()
 	if (!PredictLocation.IsValid())
 		return;
 
-	FRotator NewRotation = g_Game->CalcAngle(LocalPlayerCamera->GetCameraLocation(), PredictLocation, LocalPlayerCamera->GetCameraRotation(), Settings[AIM_SMOOTH].Value.fValue);
+	FRotator NewRotation = UKMathLib->FindLookAtRotation(LocalPlayerCamera->GetCameraLocation(), PredictLocation);
 
 	if (Settings[AIM_MODE].Value.iValue == 0) {
 		if (GetKeyPress(VK_LBUTTON, true)) {
-			LocalPlayerController->SetControlRotation(NewRotation);
+			LocalPlayerController->SetControlRotation(UKMathLib->RInterpTo(LocalPlayerCamera->GetCameraRotation(), NewRotation, UGStatics->GetWorldDeltaSeconds(GWorld), Settings[AIM_SMOOTH].Value.fValue));
 		}
 	}
 	VIRTUALIZER_TIGER_LITE_END;
@@ -524,7 +525,6 @@ void Game::Radar()
 
 float Game::CalcHeadCircleRadius(float Distance)
 {
-	VIRTUALIZER_MUTATE_ONLY_START;
 	const float MinDistance = 0.0f;
 	const float MaxDistance = 100.0f;
 	const float MinRadius = 0.5f;
@@ -540,12 +540,10 @@ float Game::CalcHeadCircleRadius(float Distance)
 		float t = (Distance - MinDistance) / (MaxDistance - MinDistance);
 		return MaxRadius + t * (MinRadius - MaxRadius);
 	}
-	VIRTUALIZER_MUTATE_ONLY_END;
 }
 
 void Game::LootName(bool Setting, bool Rarity, std::string Name, int Distance, FVector2D Position, ImVec4 Color)
 {
-	VIRTUALIZER_MUTATE_ONLY_START;
 	if (Setting && Rarity) {
 		Draw::DrawString(
 			ImGui::GetIO().FontDefault,
@@ -557,12 +555,10 @@ void Game::LootName(bool Setting, bool Rarity, std::string Name, int Distance, F
 			Color
 		);
 	}
-	VIRTUALIZER_MUTATE_ONLY_END;
 }
 
 FVector2D Game::WorldToRadar(FRotator Rotation, FVector Location, FVector EntityLocation, FVector2D RadarCenter, float RadarRadius)
 {
-	VIRTUALIZER_TIGER_LITE_START;
 	FVector2D DotPos;
 	FVector2D Direction;
 
@@ -592,31 +588,11 @@ FVector2D Game::WorldToRadar(FRotator Rotation, FVector Location, FVector Entity
 	// Convert to radar coordinates (with origin at RadarCenter)
 	DotPos.X = DotPos.X + RadarCenter.X;
 	DotPos.Y = -DotPos.Y + RadarCenter.Y;
-	VIRTUALIZER_TIGER_LITE_END;
 	return DotPos;
-}
-
-FRotator Game::CalcAngle(FVector Src, FVector Dst, FRotator OldRotation, float Smoothing)
-{
-	VIRTUALIZER_TIGER_LITE_START;
-	FVector Dir = Dst - Src;
-	Dir.GetSafeNormal();
-	FRotator Yaptr = Dir.ToRotator();
-	FRotator CpYaT = OldRotation;
-	Yaptr.Pitch -= CpYaT.Pitch;
-	Yaptr.Yaw -= CpYaT.Yaw;
-	Yaptr.Roll = 0.0f;
-	Yaptr.Clamp();
-	CpYaT.Pitch += Yaptr.Pitch / Smoothing;
-	CpYaT.Yaw += Yaptr.Yaw / Smoothing;
-	CpYaT.Roll = 0.0f;
-	VIRTUALIZER_TIGER_LITE_END;
-	return CpYaT;
 }
 
 FRotator Game::CalcAngle(FVector Target)
 {
-	VIRTUALIZER_TIGER_LITE_START;
 	FVector Rotation = LocalPlayerCamera->GetCameraLocation() - Target;
 	FRotator NewViewAngle = { 0, 0, 0 };
 	float hyp = sqrt(Rotation.X * Rotation.X + Rotation.Y * Rotation.Y);
@@ -626,13 +602,11 @@ FRotator Game::CalcAngle(FVector Target)
 
 	if (Rotation.X >= 0.f)
 		NewViewAngle.Yaw += 180.0f;
-	VIRTUALIZER_TIGER_LITE_END;
 	return NewViewAngle;
 }
 
 FVector Game::CalcPrediction(float BulletVelocity, float BulletGravity, float TargetDistance, FVector TargetPosition, FVector TargetVelocity)
 {
-	VIRTUALIZER_TIGER_LITE_START;
 	FVector Recalculated = TargetPosition;
 	float Gravity = fabs(BulletGravity);
 	float Time = TargetDistance / fabs(BulletVelocity);
@@ -641,13 +615,12 @@ FVector Game::CalcPrediction(float BulletVelocity, float BulletGravity, float Ta
 	Recalculated.X += Time * (TargetVelocity.X);
 	Recalculated.Y += Time * (TargetVelocity.Y);
 	Recalculated.Z += Time * (TargetVelocity.Z);
-	VIRTUALIZER_TIGER_LITE_END;
 	return Recalculated;
 }
 
 FVector Game::Prediction(ATigerCharacter* LocalCharacter, ATigerCharacter* TargetCharacter, AWorldSettings* World)
 {
-	VIRTUALIZER_MUTATE_ONLY_START;
+	VIRTUALIZER_TIGER_LITE_START;
 	FVector Out = FVector();
 	FVector TargetLocation = GetAimWorldLocation(TargetCharacter);
 	FVector Velocity = TargetCharacter->CharacterMovement->LastUpdateVelocity;
@@ -657,7 +630,7 @@ FVector Game::Prediction(ATigerCharacter* LocalCharacter, ATigerCharacter* Targe
 	float Distance = LocalPlayerCamera->GetCameraLocation().Distance(TargetLocation) / 100.0f;
 
 	Out = CalcPrediction(BulletSpeed, Gravity, Distance, TargetLocation, Velocity);
-	VIRTUALIZER_MUTATE_ONLY_END;
+	VIRTUALIZER_TIGER_LITE_END;
 	return Out.IsValid() ? Out : FVector();
 }
 

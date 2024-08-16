@@ -60,9 +60,6 @@
     <ClInclude Include="inlcude\Obfuscate.h">
       <Filter>Resource Files\Protection</Filter>
     </ClInclude>
-    <ClInclude Include="inlcude\Lazy.h">
-      <Filter>Resource Files\Protection</Filter>
-    </ClInclude>
     <ClInclude Include="inlcude\RetSpoofer.h">
       <Filter>Resource Files\Protection</Filter>
     </ClInclude>
@@ -140,6 +137,18 @@
   <ItemGroup>
     <MASM Include="inlcude\RetSpoofer.asm">
       <Filter>Resource Files\Protection</Filter>
+    </MASM>
+    <MASM Include="libs\Virtualizer\VirtualizerSDKMacros.asm">
+      <Filter>Resource Files\Virtualizer</Filter>
+    </MASM>
+    <MASM Include="libs\Virtualizer\VirtualizerSDKCustomVmMacros.asm">
+      <Filter>Resource Files\Virtualizer</Filter>
+    </MASM>
+    <MASM Include="libs\Virtualizer\VirtualizerSDK_TIGER_LITE.asm">
+      <Filter>Resource Files\Virtualizer</Filter>
+    </MASM>
+    <MASM Include="libs\Virtualizer\VirtualizerSDK_TIGER_LONDON.asm">
+      <Filter>Resource Files\Virtualizer</Filter>
     </MASM>
   </ItemGroup>
 </Project>
